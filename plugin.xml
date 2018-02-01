@@ -16,6 +16,8 @@
         <clobbers target="plugins.KakaoPlugin" />
     </js-module>
 
+    <preference name="KAKAO_APP_KEY" />
+
     <!-- android -->
     <platform name="android">
 

@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-kakao",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "cordova": {
     "id": "cordova-plugin-kakao",
     "platforms": [

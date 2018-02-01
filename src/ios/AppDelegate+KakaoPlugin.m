@@ -10,7 +10,7 @@
 #import <KakaoOpenSDK/KakaoOpenSDK.h>
 
 
-@implementation AppDelegate (AppEvent)
+@implementation AppDelegate (KakaoPlugin)
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
   sourceApplication:(NSString *)sourceApplication

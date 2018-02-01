@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+    id="cordova-plugin-kakao"
+    version="1.0.0">
+	
+    <name>Cordova Plugin Kakao</name>
+    <description></description>
+    <license>MIT</license>
+    <keywords></keywords>
+    <repo>https://github.com/jongwon/cordova-plugin-kakao.git</repo>
+    <issue>https://github.com/jongwon/cordova-plugin-kakao/issues</issue>
+
+    <js-module src="www/plugin.js" name="KakaoPlugin">
+        <runs/>
+        <clobbers target="plugins.KakaoPlugin" />
+    </js-module>
+
+    <!-- android -->
+    <platform name="android">
+
+		<config-file target="res/xml/config.xml" parent="/*">
+			<feature name="kakao">
+				<param name="android-package" value="com.sp.plugin.cordova.kakao.KakaoPlugin" />
+				<param name="onload" value="true" />
+			</feature>
+			<access origin="https://*.kakao.com" />
+			<access origin="https://*.kakao.co.kr" />
+			<access origin="https://*.kakaocdn.net" />
+		</config-file>
+
+		<config-file target="res/values/strings.xml" parent="/*">
+			<string name="kakao_app_key">$KAKAO_APP_KEY</string>
+			<string name="kakao_scheme">kakao$KAKAO_APP_KEY</string>
+			<string name="kakaolink_host">kakaolink</string>
+		</config-file>
+
+		<config-file target="AndroidManifest.xml" parent="/manifest">
+			<uses-permission android:name="android.permission.INTERNET" />
+		</config-file>
+
+		<config-file target="AndroidManifest.xml" parent="application">
+        	<meta-data android:name="com.kakao.sdk.AppKey" android:value="@string/kakao_app_key" />
+        </config-file>
+
+		<framework src="src/android/kakao.gradle" custom="true" type="gradleReference" />
+
+
+		<source-file src="src/android/com/sp/plugin/cordova/kakao/KakaoPlugin.java" target-dir="src/com/sp/plugin/cordova/kakao/" />
+		<source-file src="src/android/com/sp/plugin/cordova/kakao/KakaoSDKAdapter.java" target-dir="src/com/sp/plugin/cordova/kakao/" />
+
+    </platform>
+
+    <!-- ios -->
+    <platform name="ios">
+
+        <config-file target="config.xml" parent="/*">
+            <feature name="kakao">
+                <param name="ios-package" value="KakaoPlugin" onload="true" />
+            </feature>
+        </config-file>
+
+		<config-file target="*-Info.plist" parent="KAKAO_APP_KEY">
+            <string>$KAKAO_APP_KEY</string>
+        </config-file>
+
+		<config-file target="*-Info.plist" parent="CFBundleURLTypes">
+            <array>
+                <dict>
+                    <key>CFBundleURLSchemes</key>
+                    <array>
+                        <string>kakao$KAKAO_APP_KEY</string>
+                    </array>
+                </dict>
+            </array>
+        </config-file>
+
+		<config-file target="*-Info.plist" parent="LSApplicationQueriesSchemes">
+			<array>
+				<string>kakao$KAKAO_APP_KEY</string>
+				<string>kakaokompassauth</string>
+				<string>storykompassauth</string>
+				<string>kakaolink</string>
+				<string>kakaotalk-4.5.0</string>
+				<string>kakaostory-2.9.0</string>
+			</array>
+        </config-file>
+
+		<framework src="QuartzCore.framework" />
+        <framework src="src/ios/KakaoOpenSDK.framework" custom="true" />
+
+        <header-file src="src/ios/KakaoPlugin.h" />
+        <source-file src="src/ios/KakaoPlugin.m" />
+
+    </platform>
+
+</plugin>

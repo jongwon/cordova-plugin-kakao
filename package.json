@@ -1,0 +1,12 @@
+{
+  "name": "cordova-plugin-kakao",
+  "version": "1.0.0",
+  "cordova": {
+    "id": "cordova-plugin-kakao",
+    "platforms": [
+      "android",
+      "ios"
+    ]
+  },
+  "description": "카카오 로그인 서비스를 위한 코르도바 클러그인 "
+}

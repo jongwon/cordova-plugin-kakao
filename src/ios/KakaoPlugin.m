@@ -26,7 +26,8 @@
                     NSLog(@"userId=%@", result.ID);
                     NSLog(@"nickName=%@", [result propertyForKey:@"nickname"]);
                     NSLog(@"profileImage=%@", [result propertyForKey:@"profile_image"]);
-                    
+                    NSLog(@"kaccount_email=%@", [result propertyForKey:@"kaccount_email"]);
+
                     NSDictionary *userSession = @{
 							@"id": result.ID,
 							@"nickname": [result propertyForKey:@"nickname"],

@@ -20,7 +20,7 @@
     <platform name="android">
 
 		<config-file target="res/xml/config.xml" parent="/*">
-			<feature name="kakao">
+			<feature name="KakaoPlugin">
 				<param name="android-package" value="com.sp.plugin.cordova.kakao.KakaoPlugin" />
 				<param name="onload" value="true" />
 			</feature>
@@ -55,7 +55,7 @@
     <platform name="ios">
 
         <config-file target="config.xml" parent="/*">
-            <feature name="kakao">
+            <feature name="KakaoPlugin">
                 <param name="ios-package" value="KakaoPlugin" onload="true" />
             </feature>
         </config-file>

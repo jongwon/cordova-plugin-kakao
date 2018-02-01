@@ -23,15 +23,20 @@
                 CDVPluginResult* pluginResult = nil;
                 if (result) {
                     // success
+                    
                     NSLog(@"userId=%@", result.ID);
                     NSLog(@"nickName=%@", [result propertyForKey:@"nickname"]);
                     NSLog(@"profileImage=%@", [result propertyForKey:@"profile_image"]);
-                    NSLog(@"kaccount_email=%@", [result propertyForKey:@"kaccount_email"]);
+                    NSLog(@"kaccount_email=%@", [result email]);
+                    NSLog(@"thumbnail_image=%@", [result propertyForKey:@"thumbnail_image"]);
 
                     NSDictionary *userSession = @{
 							@"id": result.ID,
 							@"nickname": [result propertyForKey:@"nickname"],
-							@"profile_image": [result propertyForKey:@"profile_image"]};
+							@"profile_image": [result propertyForKey:@"profile_image"],
+                            @"email": [result email],
+                            @"thumbnail_image": [result propertyForKey:@"thumbnail_image"]
+                    };
                     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:userSession];
                 } else {
                     // failed

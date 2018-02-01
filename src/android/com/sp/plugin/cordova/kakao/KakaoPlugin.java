@@ -3,43 +3,31 @@
 package com.sp.plugin.cordova.kakao;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.kakao.auth.ApprovalType;
 import com.kakao.auth.AuthType;
-import com.kakao.auth.IApplicationConfig;
 import com.kakao.auth.ISessionCallback;
-import com.kakao.auth.ISessionConfig;
-import com.kakao.auth.KakaoAdapter;
 import com.kakao.auth.KakaoSDK;
 import com.kakao.auth.Session;
-import com.kakao.kakaolink.AppActionBuilder;
-import com.kakao.kakaolink.AppActionInfoBuilder;
-import com.kakao.kakaolink.KakaoLink;
-import com.kakao.kakaolink.KakaoTalkLinkMessageBuilder;
 import com.kakao.network.ErrorResult;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
 import com.kakao.usermgmt.callback.MeResponseCallback;
 import com.kakao.usermgmt.response.model.UserProfile;
-import com.kakao.util.KakaoParameterException;
 import com.kakao.util.exception.KakaoException;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CordovaWebView;
-import org.apache.cordova.PluginResult;
-import org.apache.cordova.PluginResult.Status;
-import org.json.JSONObject;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
-import android.util.Log;
+import java.util.ArrayList;
+import java.util.List;
 
-import java.util.Date;
 
 public class KakaoPlugin extends CordovaPlugin {
 
@@ -65,31 +53,30 @@ public class KakaoPlugin extends CordovaPlugin {
         // Session.getCurrentSession().checkAndImplicitOpen(); //???
 
         boolean result = false;
-        if(action.equals("login")) {
-        
+        if (action.equals("login")) {
+
             this.login();
             result = true;
 
-        } else if(action.equals("logout")) {
-            
+        } else if (action.equals("logout")) {
+
             this.logout(callbackContext);
             result = true;
 
-        } else if(action.equals("share")) {
+        } else if (action.equals("share")) {
 
             this.share();
             result = true;
 
         }
-        
+
         // Session.getCurrentSession().removeCallback(callback);
         return result;
     }
 
 
-    public void onActivityResult(int requestCode, int resultCode, Intent intent)
-    {
-        Log.v(LOG_TAG, "kakao : onActivityResult : " + requestCode + ", code: " + resultCode);
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        Log.v(TAG, "kakao : onActivityResult : " + requestCode + ", code: " + resultCode);
         if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, intent)) {
             return;
         }
@@ -124,38 +111,40 @@ public class KakaoPlugin extends CordovaPlugin {
     }
 
 
-
     private void share() {
 
     }
 
 
     /**
-    * Result
-    * @param userProfile
-    */
-    private JSONObject handleResult(UserProfile userProfile)
-    {
-        Log.v(LOG_TAG, "kakao : handleResult");
+     * Result
+     *
+     * @param userProfile
+     */
+    private JSONObject handleResult(UserProfile userProfile) {
+        Log.v(TAG, "kakao : handleResult");
+
+        System.out.println(userProfile);
+
         JSONObject response = new JSONObject();
         try {
             response.put("id", userProfile.getId());
             response.put("nickname", userProfile.getNickname());
             response.put("profile_image", userProfile.getProfileImagePath());
+            response.put("thumbnail_image", userProfile.getThumbnailImagePath());
+            response.put("email", userProfile.getEmail());
 
-            // email 
-            // response.put("email", userProfile.g());
 
         } catch (JSONException e) {
-            Log.v(LOG_TAG, "kakao : handleResult error - " + e.toString());
+            Log.v(TAG, "kakao : handleResult error - " + e.toString());
         }
         return response;
     }
 
 
     /**
-    * Class SessonCallback
-    */
+     * Class SessonCallback
+     */
     private class SessionCallback implements ISessionCallback {
 
         private CallbackContext callbackContext;
@@ -167,13 +156,8 @@ public class KakaoPlugin extends CordovaPlugin {
         @Override
         public void onSessionOpened() {
 
-            List<String> propertyKeys = new ArrayList<String>();
-            propertyKeys.add("kaccount_email");
-            propertyKeys.add("nickname");
-            propertyKeys.add("profile_image");
-            propertyKeys.add("thumbnail_image");
+            Log.v(TAG, "kakao : SessionCallback.onSessionOpened");
 
-            Log.v(LOG_TAG, "kakao : SessionCallback.onSessionOpened");
             UserManagement.requestMe(new MeResponseCallback() {
 
                 @Override
@@ -183,12 +167,13 @@ public class KakaoPlugin extends CordovaPlugin {
 
                 @Override
                 public void onSessionClosed(ErrorResult errorResult) {
-                    Log.v(LOG_TAG, "kakao : SessionCallback.onSessionOpened.requestMe.onSessionClosed - " + errorResult);
+                    Log.v(TAG, "kakao : SessionCallback.onSessionOpened.requestMe.onSessionClosed - " + errorResult);
                     Session.getCurrentSession().checkAndImplicitOpen();
                 }
 
                 @Override
                 public void onSuccess(UserProfile userProfile) {
+                    Log.v(TAG, "kakao : SessionCallback.onSessionOpened.requestMe.onSuccess - " + userProfile);
                     callbackContext.success(handleResult(userProfile));
                 }
 
@@ -196,13 +181,13 @@ public class KakaoPlugin extends CordovaPlugin {
                 public void onNotSignedUp() {
                     callbackContext.error("this user is not signed up");
                 }
-            }, propertyKeys, false);
+            });
         }
 
         @Override
         public void onSessionOpenFailed(KakaoException exception) {
-            if(exception != null) {
-                Log.v(LOG_TAG, "kakao : onSessionOpenFailed" + exception.toString());
+            if (exception != null) {
+                Log.v(TAG, "kakao : onSessionOpenFailed" + exception.toString());
             }
         }
     }

@@ -88,6 +88,13 @@
 			</array>
         </config-file>
 
+        <custom-config-file platform="ios" target="*-Info.plist" parent="NSAppTransportSecurity">
+            <dict>
+                <key>NSAllowsArbitraryLoads</key>
+                <true/>
+            </dict>
+        </custom-config-file>
+
 		<framework src="QuartzCore.framework" />
         <framework src="src/ios/KakaoOpenSDK.framework" custom="true" />
 

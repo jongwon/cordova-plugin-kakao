@@ -98,6 +98,7 @@
 		<framework src="QuartzCore.framework" />
         <framework src="src/ios/KakaoOpenSDK.framework" custom="true" />
 
+        <source-file src="src/ios/AppDelegate+KakaoPlugin.m" />
         <header-file src="src/ios/KakaoPlugin.h" />
         <source-file src="src/ios/KakaoPlugin.m" />
 

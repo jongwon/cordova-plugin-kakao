@@ -34,6 +34,7 @@ public class KakaoPlugin extends CordovaPlugin {
     private static final String TAG = "KakaoPlugin";
     private static volatile Activity currentActivity;
     private SessionCallback callback;
+    private static boolean initialized = false;
 
 
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
@@ -41,8 +42,10 @@ public class KakaoPlugin extends CordovaPlugin {
 
         Log.d(TAG, "Initializing KakaoPlugin");
         currentActivity = this.cordova.getActivity();
-        KakaoSDK.init(new KakaoSDKAdapter(currentActivity));
-
+        if (!initialized){
+            KakaoSDK.init(new KakaoSDKAdapter(currentActivity));
+            initialized = true;
+        }
     }
 
     public boolean execute(String action, JSONArray args, final CallbackContext callbackContext) throws JSONException {
